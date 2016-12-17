@@ -47,11 +47,13 @@ class MontCodeMembersBST {
   }
 
   public MontCodeMember setCurrentMember(String firstName, String lastName) throws RecordNotFoundException {
+    MontCodeMember origCurrentMember;
 
-    try {
-      currentMember = montCodeMembers.get(new MontCodeMember(firstName, lastName));
-    } catch (Exception e) {
-      System.out.println("What exception is this? " + e);
+    origCurrentMember = currentMember;
+    currentMember = montCodeMembers.get(new MontCodeMember(firstName, lastName));
+    if(currentMember == null) {
+      currentMember = origCurrentMember;
+      throw new RecordNotFoundException("Member " + firstName + " " + lastName + " does not exist.  Unable to set member");
     }
 
     return currentMember;
@@ -64,11 +66,11 @@ class MontCodeMembersBST {
   public void remove(String firstName, String lastName) throws RecordNotFoundException {
     MontCodeMember memberToRemove;
 
-    memberToRemove = montCodeMembers.get(firstName, lastName);
+    memberToRemove = montCodeMembers.get(new MontCodeMember(firstName, lastName));
       if(memberToRemove == null) {
         throw new RecordNotFoundException("No memberToRemove.  Need to run setCurrentMember()");
       } else {
-        //TODO Remove memberToRemove;
+        montCodeMembers.remove(memberToRemove);
       }
   }
 
@@ -76,7 +78,7 @@ class MontCodeMembersBST {
     if(currentMember == null) {
       throw new RecordNotFoundException("No currentMember.  Need to run setCurrentMember()");
     } else {
-      //TODO Remove currentMember;
+      montCodeMembers.remove(currentMember);
       currentMember = null;
     }
   }
