@@ -7,10 +7,12 @@ class UnitTests {
   static Scanner keyboard = new Scanner(System.in);
 
   public static void main(String[] args) {
-    //testMontCodeMember();
-    testMainMontCodeMembers();
+    testMontCodeMember();
+    testMontCodeMembersBST();
 
-    System.out.println("\nTotal test failed: " + fails);
+
+    System.out.println("\nTotal tests: " + testNum);
+    System.out.println("Total test failed: " + fails);
     System.out.println("Total test skipped: " + skipped);
     System.exit(0);
   }
@@ -32,9 +34,7 @@ class UnitTests {
     String[] testName2 = {"First2", "Last2"};
 
     System.out.print("Do you want to SKIP the manual MontCodeMember tests? (y/n): ");
-    if(keyboard.nextLine().toUpperCase().charAt(0) == 'Y') {
-      isSkipping = true;
-    }
+    isSkipping = (keyboard.nextLine().toUpperCase().charAt(0) == 'Y');
 
     MontCodeMember testMember1 = null;
     try {
@@ -213,12 +213,242 @@ class UnitTests {
     } catch (Exception e) {System.out.println("\n" + e); testError = true;}
     fails += test("Test sendEMail Exception", testError, false);
     testError = false;
-
-    isSkipping = false;
   }
 
-  static void testMainMontCodeMembers() {
-    MainMontCodeMembers.init();
+  static void testMontCodeMembersBST() {
+
+    MontCodeMembersBST testList1 = null;
+    try {
+      if(testList1 != null) {
+        testError = true;
+      }
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test create empty MontCodeMembersBST", testError, false);
+    testError = false;
+
+    try {
+      testList1 = new MontCodeMembersBST();
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test constructor - testList1", testError, false);
+    testError = false;
+
+    // TODO Unit Test: Second constructor from file
+    // MontCodeMembersBST testList2 = null;
+    // try {
+    //   testList2 = new MontCodeMembersBST(testName2[0],testName2[1]);
+    // } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    // fails += test("Test constructor - testList2", testError, false);
+    // testError = false;
+
+    try {
+      testList1.add("Anna", "Smith");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test testList1.add 1 Exception", testError, false);
+    testError = false;
+
+    try {
+      testList1.add("Bob", "Wilber");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test testList1.add 2 Exception", testError, false);
+    testError = false;
+
+    try {
+      testList1.add("Kevin", "Johnson");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test testList1.add 3 Exception", testError, false);
+    testError = false;
+
+    try {
+      testList1.add("Robert", "Simpson");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test testList1.add 4 Exception", testError, false);
+    testError = false;
+
+    try {
+      testList1.add("Robert", "Simpson");
+    } catch (DuplicateRecordException e) {
+      fails += test("Test testList1.add DuplicateRecordException Okay", false, false);
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test testList1.add DuplicateRecordException Not Okay", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test print current member",
+        testList1.getCurrentMember().toString(), "  This STRING NEEDS updating");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test print current member Exception", testError, false);
+    testError = false;
+
+    try {
+      testList1.update("firstName", "NewFirst");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test update firstName Exception", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test to confirm update firstName",
+        testList1.getCurrentMember().toString(), "  This STRING NEEDS updating");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test update firstName confirm Exception", testError, false);
+    testError = false;
+
+    try {
+      testList1.update("lastName", "NewLast");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test update lastName Exception", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test to confirm update lastName",
+        testList1.getCurrentMember().toString(), "  This STRING NEEDS updating");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test update lastName confirm Exception", testError, false);
+    testError = false;
+
+    try {
+      testList1.update("eMail", "NewEMail");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test update eMail Exception", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test to confirm update eMail",
+        testList1.getCurrentMember().toString(), "  This STRING NEEDS updating");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test update eMail confirm Exception", testError, false);
+    testError = false;
+
+    try {
+      testList1.update("githubUserName", "NewGitHub");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test update githubUserName Exception", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test to confirm update githubUserName",
+        testList1.getCurrentMember().toString(), "  This STRING NEEDS updating");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test update githubUserName confirm Exception", testError, false);
+    testError = false;
+
+    try {
+      testList1.update("gitterUserName", "NewGitter");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test update gitterUserName Exception", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test to confirm update gitterUserName",
+        testList1.getCurrentMember().toString(), "  This STRING NEEDS updating");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test update gitterUserName confirm Exception", testError, false);
+    testError = false;
+
+    try {
+      testList1.update("fccUserName", "NewFCC");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test update fccUserName Exception", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test to confirm update fccUserName",
+        testList1.getCurrentMember().toString(), "  This STRING NEEDS updating");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test update fccUserName confirm Exception", testError, false);
+    testError = false;
+
+    try {
+      testList1.update("iDoNotExist", "hahaha");
+    } catch (NoSuchFieldException e) {
+      fails += test("Test update 'iDoNotExist' NoSuchFieldException Okay", false, false);
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test update 'iDoNotExist' NoSuchFieldException Not Okay", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test to confirm all updates",
+        testList1.getCurrentMember().toString(), "  NewFirst NewLast This STRING NEEDS updating");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test all updates confirmed Exception", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test contains yes",
+        testList1.contains("Anna", "Smith"), true);
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test contains yes Exception", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test contains no",
+        testList1.contains("Lily", "Romano"), false);
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test contains no Exception", testError, false);
+    testError = false;
+
+    try {
+      testList1.setCurrentMember("Anna", "Smith");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test setCurrentMember 1", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test setCurrentMember 1 correct",
+        testList1.getCurrentMember().toString(), "  ANNA This STRING NEEDS updating");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test setCurrentMember 1 correct Exception 1", testError, false);
+    testError = false;
+
+    try {
+      testList1.setCurrentMember("iDoNotExist", "hahaha");
+    } catch (RecordNotFoundException e) {
+      fails += test("Test setCurrentMember 2 RecordNotFoundException Okay", false, false);
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test setCurrentMember 2 RecordNotFoundException Not Okay", testError, false);
+    testError = false;
+
+    try {
+      testList1.removeCurrentMember();
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test removeCurrentMember Exception", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test contains no after removeCurrentMember",
+        testList1.contains("Anna", "Smith"), false);
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test contains no after removeCurrentMember Exception", testError, false);
+    testError = false;
+
+    try {
+      testList1.removeCurrentMember();
+    } catch (RecordNotFoundException e) {
+      fails += test("Test removeCurrentMember RecordNotFoundException Okay", false, false);
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test removeCurrentMember RecordNotFoundException Not Okay", testError, false);
+    testError = false;
+
+    try {
+      testList1.remove("Bob", "Wilber");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test remove Exception", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test contains no after remove",
+        testList1.contains("Bob", "Wilber"), false);
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test contains no after remove Exception", testError, false);
+    testError = false;
+
+    try {
+      testList1.remove("Bob", "Wilber");
+    } catch (RecordNotFoundException e) {
+      fails += test("Test remove RecordNotFoundException Okay", false, false);
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test remove RecordNotFoundException Not Okay", testError, false);
+    testError = false;
+
   }
 
 }
