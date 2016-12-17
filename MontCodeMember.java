@@ -135,4 +135,8 @@ public class MontCodeMember implements Comparable<MontCodeMember> {
 		return result;
 	}
 
+	public String nameToString() {
+		return firstName +" " + lastName;
+	}
+
 }

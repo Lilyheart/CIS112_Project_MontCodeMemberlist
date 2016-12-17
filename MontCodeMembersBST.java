@@ -5,6 +5,10 @@ class MontCodeMembersBST {
   private BinarySearchTree<MontCodeMember> montCodeMembers;
   private MontCodeMember currentMember;
 
+  static final int INORDER = 1;
+  static final int PREORDER = 2;
+  static final int POSTORDER = 3;
+
   public MontCodeMembersBST() {
     montCodeMembers = new BinarySearchTree<MontCodeMember>();
   }
@@ -81,5 +85,17 @@ class MontCodeMembersBST {
       montCodeMembers.remove(currentMember);
       currentMember = null;
     }
+  }
+
+  public int resetListAllMembers() {
+    int numOfMembers;
+
+    numOfMembers = montCodeMembers.reset(INORDER);
+
+    return numOfMembers;
+  }
+
+  public MontCodeMember getNext() {
+    return montCodeMembers.getNext(INORDER);
   }
 }

@@ -81,12 +81,29 @@ public class MontCodeMembersApp  {
         break;
       case 4: displayMember();
         break;
-      case 5: //TODO memberList.listAllMembers();
+      case 5: listAllMembers();
         break;
       case 6: //TODO Fill with Demo Data
         break;
       default: isEndProgram = true;
     }
+  }
+
+  private static boolean findMember() {
+    String firstName, lastName;
+    boolean isFound = true;
+
+    System.out.print("Please enter the first name>> ");
+    firstName = keyboard.nextLine();
+    System.out.print("Please enter the last name>> ");
+    lastName = keyboard.nextLine();
+    try {
+      memberList.setCurrentMember(firstName, lastName);
+    } catch (RecordNotFoundException e) {
+      return false;
+    }
+
+    return isFound;
   }
 
   static void addMember() {
@@ -99,32 +116,32 @@ public class MontCodeMembersApp  {
     try {
       memberList.add(firstName, lastName);
       updateSecondaryInformation();
-      System.out.println("Added: \n" + memberList.currentMember);
+      System.out.println("Added: \n" + memberList.getCurrentMember());
     } catch (DuplicateRecordException e) {
       System.out.println("--==>>> Member already exists in database <<<==--");
-      System.out.println("Would you rather update this member?");
+      System.out.println("Would you rather update this member (y/n)?");
       if(keyboard.nextLine().toUpperCase().charAt(0) == 'Y') {
-        //TODO findMember();
+        memberList.setCurrentMember(firstName, lastName);
         updateSecondaryInformation();
-        System.out.println("Updated: \n" + memberList.currentMember);
+        System.out.println("Updated: \n" + memberList.getCurrentMember());
       }
     }
   }
 
   static void displayMember() {
     findMember();
-    System.out.println(memberList.currentMember);
+    System.out.println(memberList.getCurrentMember());
   }
 
   static void updateMember() {
     findMember();
     updateSecondaryInformation();
-    System.out.println("Updated Member: \n" + memberList.currentMember);
+    System.out.println("Updated Member: \n" + memberList.getCurrentMember());
   }
 
   private static void updateSecondaryInformation() {
     int responseInt = -1, maxMenu = 8;
-    String responseString;
+    String responseString = "";
 
     while(responseInt != maxMenu) {
       responseInt = -1;
@@ -147,72 +164,67 @@ public class MontCodeMembersApp  {
         }
         keyboard.nextLine();
       }
-      responseString = getUpdateValue();
-      switch (responseInt) {
-        case 1: memberList.update("firstName", responseString);
-          break;
-        case 2: memberList.update("lastName", responseString);
-          break;
-        case 3: memberList.update("eMail", responseString);
-          break;
-        case 4: memberList.update("githubUserName", responseString);
-          System.out.print("Also set Gitter to " + responseString + "?>> ");
-          if(keyboard.nextLine().toUpperCase().charAt(0) == 'Y') {
-            memberList.update("gitterUserName", responseString);
-            System.out.print("Also set Free Code Camp to " + responseString + "?>> ");
+      if(responseInt <= 6) {
+        System.out.print("What would you like to update this to?>> ");
+        responseString = keyboard.nextLine();
+      }
+      try {
+        switch (responseInt) {
+          case 1: memberList.update("firstName", responseString);
+            break;
+          case 2: memberList.update("lastName", responseString);
+            break;
+          case 3: memberList.update("eMail", responseString);
+            break;
+          case 4: memberList.update("githubUserName", responseString);
+            System.out.print("Also set Gitter to " + responseString + "  (y/n)?>> ");
+            if(keyboard.nextLine().toUpperCase().charAt(0) == 'Y') {
+              memberList.update("gitterUserName", responseString);
+            }
+            System.out.print("Also set Free Code Camp to " + responseString + "  (y/n)?>> ");
             if(keyboard.nextLine().toUpperCase().charAt(0) == 'Y') {
               memberList.update("fccUserName", responseString);
             }
-          }
-          break;
-        case 5: memberList.update("gitterUserName", responseString);
-          break;
-        case 6: memberList.update("fccUserName", responseString);
-          break;
-        case 7: System.out.println(memberList.getCurrentMember()); //TODO works?
-          break;
-        default:
+            break;
+          case 5: memberList.update("gitterUserName", responseString);
+            break;
+          case 6: memberList.update("fccUserName", responseString);
+            break;
+          case 7: System.out.println(memberList.getCurrentMember());
+            break;
+          default:
+        }
+      } catch (NoSuchFieldException e) {
+
       }
     }
   }
 
-  private static String getUpdateValue() {
-    String response;
-
-    System.out.print("What would you like to update this to?>> ");
-    response = keyboard.nextLine();
-
-    return response;
-  }
-
   static void deleteMember() {
-    findMember();
-    if(currentMember != null) {
-      System.out.println("User Found: \n" + currentMember);
-      System.out.print("Continue to delete?>> ");
+    boolean isFound;
+
+    isFound = findMember();
+    if(isFound) {
+      System.out.println("User Found: \n" + memberList.getCurrentMember());
+      System.out.print("Continue to delete?  (y/n)>> ");
       if(keyboard.nextLine().toUpperCase().charAt(0) == 'Y') {
-        //TODO montCodeMembers.remove(currentMember);
+        memberList.removeCurrentMember();
       }
     } else {
       System.out.println("****************************");
       System.out.println("* This user was not Found! *");
       System.out.println("*    No one was deleted    *");
-      System.out.println("****************************");
-      System.out.println();
+      System.out.println("****************************\n");
     }
-    currentMember = null;
   }
 
-  private static void findMember() {
-    MontCodeMember searchMember;
-    String firstName, lastName;
+  static void listAllMembers() {
+    int numOfMembers;
 
-    System.out.print("Please enter the first name>> ");
-    firstName = keyboard.nextLine();
-    System.out.print("Please enter the last name>> ");
-    lastName = keyboard.nextLine();
-    searchMember = new MontCodeMember(firstName, lastName);
-
-    //TODO currentMember = montCodeMembers.get(searchMember);
+    numOfMembers = memberList.resetListAllMembers();
+    for (int i = 0; i < numOfMembers; i++) {
+      System.out.println(memberList.getNext().nameToString());
+    }
   }
+
 }

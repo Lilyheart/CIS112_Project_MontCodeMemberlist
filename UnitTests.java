@@ -1,4 +1,4 @@
-// import ch05.queues.*;
+import ch05.queues.QueueUnderflowException;
 import java.util.Scanner;
 
 class UnitTests {
@@ -95,6 +95,13 @@ class UnitTests {
         testMember1.getLastName(), "Smith");
     } catch (Exception e) {System.out.println("\n" + e); testError = true;}
     fails += test("Test getLastName Exception 2", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test nameToString",
+        testMember1.nameToString(), "Anna Smith");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test nameToString Exception", testError, false);
     testError = false;
 
     try {
@@ -454,6 +461,35 @@ class UnitTests {
       fails += test("Test remove RecordNotFoundException Okay", false, false);
     } catch (Exception e) {System.out.println("\n" + e); testError = true;}
     fails += test("Test remove RecordNotFoundException Not Okay", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test resetListAllMembers",
+        testList1.resetListAllMembers(), 2);
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test resetListAllMembers Exception", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test getNext 1",
+        testList1.getNext().nameToString(), "Kevin Johnson");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test getNext 1 Exception", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test getNext 2",
+        testList1.getNext().nameToString(), "NewFirst NewLast");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test getNext 2 Exception", testError, false);
+    testError = false;
+
+    try {
+      testList1.getNext();
+    } catch (QueueUnderflowException e) {
+      fails += test("Test getNext QueueUnderflowException Okay", false, false);
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test getNext QueueUnderflowException Not Okay", testError, false);
     testError = false;
 
   }
