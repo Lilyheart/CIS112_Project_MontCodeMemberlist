@@ -70,6 +70,17 @@ public class MontCodeMember implements Comparable<MontCodeMember> {
 		return thisName.compareTo(otherName);
   }
 
+	public void sendEMail() {
+  	try {
+			URL emailURL = new URL("mailto:" + eMail + "?Subject=MontCode: ");
+			DesktopUtil.browse(emailURL);
+		} catch (NullPointerException e) {
+			System.out.println(firstName + " " + lastName + " doesn't have an email address");
+		} catch (Exception e) {
+			System.out.println("sendEMail error: " + e);
+		}
+	}
+
 	public void openGitHub() {
   	try {
       URL githubURL = new URL("https", "github.com/", githubUserName);
@@ -78,17 +89,6 @@ public class MontCodeMember implements Comparable<MontCodeMember> {
 			System.out.println(firstName + " " + lastName + " doesn't have a GitHub userID");
 		} catch (Exception e) {
 			System.out.println("openGitHub error: " + e);
-		}
-	}
-
-	public void openFCC() { //TODO needs unit test
-  	try {
-      URL fccURL = new URL("https", "www.freecodecamp.com/", fccUserName);
-			DesktopUtil.browse(fccURL);
-		} catch (NullPointerException e) {
-			System.out.println(firstName + " " + lastName + " doesn't have a Free Code Camp userID");
-		} catch (Exception e) {
-			System.out.println("openFCC error: " + e);
 		}
 	}
 
@@ -103,14 +103,14 @@ public class MontCodeMember implements Comparable<MontCodeMember> {
 		}
 	}
 
-	public void sendEMail() {
+	public void openFCC() {
   	try {
-			URL emailURL = new URL("mailto:" + eMail + "?Subject=MontCode: ");
-			DesktopUtil.browse(emailURL);
+      URL fccURL = new URL("https", "www.freecodecamp.com/", fccUserName);
+			DesktopUtil.browse(fccURL);
 		} catch (NullPointerException e) {
-			System.out.println(firstName + " " + lastName + " doesn't have an email address");
+			System.out.println(firstName + " " + lastName + " doesn't have a Free Code Camp userID");
 		} catch (Exception e) {
-			System.out.println("sendEMail error: " + e);
+			System.out.println("openFCC error: " + e);
 		}
 	}
 

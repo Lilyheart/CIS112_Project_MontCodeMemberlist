@@ -164,6 +164,25 @@ class UnitTests {
 
     try {
       if(isSkipping) {
+        System.out.println(++testNum + ") sendEMail() test skipped.");
+        skipped++;
+      } else {
+        System.out.print("Okay to attempt sendEMail()? (y/n): ");
+        if(keyboard.nextLine().toUpperCase().charAt(0) == 'Y') {
+          testMember1.sendEMail();
+          System.out.print("Did the sendEMail message page open correctly? (y/n): ");
+          fails += test("Test sendEMail", keyboard.nextLine().toUpperCase().charAt(0), 'Y');
+        } else {
+          System.out.println(++testNum + ") sendEMail() test skipped.");
+          skipped++;
+        }
+      }
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test sendEMail Exception", testError, false);
+    testError = false;
+
+    try {
+      if(isSkipping) {
         System.out.println(++testNum + ") openGitHub() test skipped.");
         skipped++;
       } else {
@@ -202,22 +221,23 @@ class UnitTests {
 
     try {
       if(isSkipping) {
-        System.out.println(++testNum + ") sendEMail() test skipped.");
+        System.out.println(++testNum + ") openFCC() test skipped.");
         skipped++;
       } else {
-        System.out.print("Okay to attempt sendEMail()? (y/n): ");
+        System.out.print("Okay to attempt openFCC()? (y/n): ");
         if(keyboard.nextLine().toUpperCase().charAt(0) == 'Y') {
-          testMember1.sendEMail();
-          System.out.print("Did the sendEMail message page open correctly? (y/n): ");
-          fails += test("Test sendEMail", keyboard.nextLine().toUpperCase().charAt(0), 'Y');
+          testMember1.openFCC();
+          System.out.print("Did the FCC page open correctly? (y/n): ");
+          fails += test("Test openFCC", keyboard.nextLine().toUpperCase().charAt(0), 'Y');
         } else {
-          System.out.println(++testNum + ") sendEMail() test skipped.");
+          System.out.println(++testNum + ") openFCC() test skipped.");
           skipped++;
         }
       }
     } catch (Exception e) {System.out.println("\n" + e); testError = true;}
-    fails += test("Test sendEMail Exception", testError, false);
+    fails += test("Test openFCC Exception", testError, false);
     testError = false;
+
   }
 
   static void testMontCodeMembersBST() {
