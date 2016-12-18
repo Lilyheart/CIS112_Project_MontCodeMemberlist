@@ -99,7 +99,7 @@ public class MontCodeMembersApp  {
     lastName = keyboard.nextLine();
     try {
       memberList.setCurrentMember(firstName, lastName);
-    } catch (RecordNotFoundException e) {
+    } catch (MCRecordNotFoundException e) {
       return false;
     }
 
@@ -117,7 +117,7 @@ public class MontCodeMembersApp  {
       memberList.add(firstName, lastName);
       updateSecondaryInformation();
       System.out.println("Added: \n" + memberList.getCurrentMember());
-    } catch (DuplicateRecordException e) {
+    } catch (MCRecordDuplicateException e) {
       System.out.println("--==>>> Member already exists in database <<<==--");
       System.out.println("Would you rather update this member (y/n)?");
       if(keyboard.nextLine().toUpperCase().charAt(0) == 'Y') {

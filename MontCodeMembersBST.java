@@ -16,9 +16,9 @@ class MontCodeMembersBST {
     //TODO Constructor from file
   }
 
-  public void add(String firstName, String lastName) throws DuplicateRecordException {
+  public void add(String firstName, String lastName) throws MCRecordDuplicateException {
     if(contains(firstName, lastName)) {
-      throw new DuplicateRecordException("MontCoder List already contains " + firstName + " " + lastName);
+      throw new MCRecordDuplicateException("MontCoder List already contains " + firstName + " " + lastName);
     } else {
       currentMember = new MontCodeMember(firstName, lastName);
       montCodeMembers.add(currentMember);
@@ -49,14 +49,14 @@ class MontCodeMembersBST {
     return montCodeMembers.contains(new MontCodeMember(firstName, lastName));
   }
 
-  public MontCodeMember setCurrentMember(String firstName, String lastName) throws RecordNotFoundException {
+  public MontCodeMember setCurrentMember(String firstName, String lastName) throws MCRecordNotFoundException {
     MontCodeMember origCurrentMember;
 
     origCurrentMember = currentMember;
     currentMember = montCodeMembers.get(new MontCodeMember(firstName, lastName));
     if(currentMember == null) {
       currentMember = origCurrentMember;
-      throw new RecordNotFoundException("Member " + firstName + " " + lastName + " does not exist.  Unable to set member");
+      throw new MCRecordNotFoundException("Member " + firstName + " " + lastName + " does not exist.  Unable to set member");
     }
 
     return currentMember;
@@ -66,20 +66,20 @@ class MontCodeMembersBST {
     return currentMember;
   }
 
-  public void remove(String firstName, String lastName) throws RecordNotFoundException {
+  public void remove(String firstName, String lastName) throws MCRecordNotFoundException {
     MontCodeMember memberToRemove;
 
     memberToRemove = montCodeMembers.get(new MontCodeMember(firstName, lastName));
       if(memberToRemove == null) {
-        throw new RecordNotFoundException("No memberToRemove.  Need to run setCurrentMember()");
+        throw new MCRecordNotFoundException("No memberToRemove.  Need to run setCurrentMember()");
       } else {
         montCodeMembers.remove(memberToRemove);
       }
   }
 
-  public void removeCurrentMember() throws RecordNotFoundException {
+  public void removeCurrentMember() throws MCRecordNotFoundException {
     if(currentMember == null) {
-      throw new RecordNotFoundException("No currentMember.  Need to run setCurrentMember()");
+      throw new MCRecordNotFoundException("No currentMember.  Need to run setCurrentMember()");
     } else {
       montCodeMembers.remove(currentMember);
       currentMember = null;

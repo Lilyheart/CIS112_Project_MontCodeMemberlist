@@ -272,10 +272,10 @@ class UnitTests {
 
     try {
       testList1.add("Robert", "Simpson");
-    } catch (DuplicateRecordException e) {
-      fails += test("Test testList1.add DuplicateRecordException Okay", false, false);
+    } catch (MCRecordDuplicateException e) {
+      fails += test("Test testList1.add MCRecordDuplicateException Okay", false, false);
     } catch (Exception e) {System.out.println("\n" + e); testError = true;}
-    fails += test("Test testList1.add DuplicateRecordException Not Okay", testError, false);
+    fails += test("Test testList1.add MCRecordDuplicateException Not Okay", testError, false);
     testError = false;
 
     try {
@@ -414,10 +414,10 @@ class UnitTests {
 
     try {
       testList1.setCurrentMember("iDoNotExist", "hahaha");
-    } catch (RecordNotFoundException e) {
-      fails += test("Test setCurrentMember 2 RecordNotFoundException Okay", false, false);
+    } catch (MCRecordNotFoundException e) {
+      fails += test("Test setCurrentMember 2 MCRecordNotFoundException Okay", false, false);
     } catch (Exception e) {System.out.println("\n" + e); testError = true;}
-    fails += test("Test setCurrentMember 2 RecordNotFoundException Not Okay", testError, false);
+    fails += test("Test setCurrentMember 2 MCRecordNotFoundException Not Okay", testError, false);
     testError = false;
 
     try {
@@ -435,10 +435,10 @@ class UnitTests {
 
     try {
       testList1.removeCurrentMember();
-    } catch (RecordNotFoundException e) {
-      fails += test("Test removeCurrentMember RecordNotFoundException Okay", false, false);
+    } catch (MCRecordNotFoundException e) {
+      fails += test("Test removeCurrentMember MCRecordNotFoundException Okay", false, false);
     } catch (Exception e) {System.out.println("\n" + e); testError = true;}
-    fails += test("Test removeCurrentMember RecordNotFoundException Not Okay", testError, false);
+    fails += test("Test removeCurrentMember MCRecordNotFoundException Not Okay", testError, false);
     testError = false;
 
     try {
@@ -456,10 +456,10 @@ class UnitTests {
 
     try {
       testList1.remove("Bob", "Wilber");
-    } catch (RecordNotFoundException e) {
-      fails += test("Test remove RecordNotFoundException Okay", false, false);
+    } catch (MCRecordNotFoundException e) {
+      fails += test("Test remove MCRecordNotFoundException Okay", false, false);
     } catch (Exception e) {System.out.println("\n" + e); testError = true;}
-    fails += test("Test remove RecordNotFoundException Not Okay", testError, false);
+    fails += test("Test remove MCRecordNotFoundException Not Okay", testError, false);
     testError = false;
 
     try {
