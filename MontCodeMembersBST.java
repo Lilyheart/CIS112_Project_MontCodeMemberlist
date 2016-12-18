@@ -9,21 +9,29 @@ class MontCodeMembersBST {
   static final int POSTORDER = 3;
   static final int INORDER_REV = 4;
   static int sortType;
+  static int addsSinceBalance;
 
   public MontCodeMembersBST() {
+    addsSinceBalance = 0;
     montCodeMembers = new BinarySearchTreeReverseable<MontCodeMember>();
   }
 
   public MontCodeMembersBST(String fileName) throws ClassNotFoundException, FileNotFoundException, IOException {
+    addsSinceBalance = 0;
     restoreFromDrive(fileName);
   }
 
   public void add(String firstName, String lastName) throws MCRecordDuplicateException {
+    addsSinceBalance++;
     if(contains(firstName, lastName)) {
       throw new MCRecordDuplicateException("MontCoder List already contains " + firstName + " " + lastName);
     } else {
       currentMember = new MontCodeMember(firstName, lastName);
       montCodeMembers.add(currentMember);
+    }
+    if(addsSinceBalance >= 10) {
+      montCodeMembers.balance();
+      addsSinceBalance = 0;
     }
   }
 

@@ -1,6 +1,7 @@
 
 class BinarySearchTreeReverseable<T extends Comparable<T>> extends BinarySearchTree<T> {
-  protected LinkedStack inOrderStack;
+  private LinkedStack<T> inOrderStack;
+	private ArrayIndexedList<T> balanceList;
   static final int INORDER_REV = 4;
 
 	public BinarySearchTreeReverseable() {
@@ -40,6 +41,33 @@ class BinarySearchTreeReverseable<T extends Comparable<T>> extends BinarySearchT
 
     return answer;
 	}
+
+	public void balance() {
+		int count = reset(1);
+		balanceList = new ArrayIndexedList<T>(count);
+
+		for (int i = 0; i < count; i++) {
+			balanceList.add(i, getNext(1));
+		}
+
+		root = null;
+
+		recBalance(0, count-1);
+	}
+
+  private void recBalance(int low, int high) {
+		if(low == high) {
+			add(balanceList.get(low));
+		} else if ((low + 1) == high) {
+			add(balanceList.get(low));
+			add(balanceList.get(high));
+		} else {
+			int mid = (low + high) / 2;
+			add(balanceList.get(mid));
+			recBalance(low, mid - 1);
+			recBalance(mid + 1, high);
+		}
+  }
 
 
 }
