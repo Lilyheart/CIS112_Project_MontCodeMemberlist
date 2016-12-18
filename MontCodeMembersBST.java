@@ -1,5 +1,4 @@
-import ch08.trees.BinarySearchTree;
-import java.io.File;
+import java.io.*;
 
 class MontCodeMembersBST {
   private BinarySearchTree<MontCodeMember> montCodeMembers;
