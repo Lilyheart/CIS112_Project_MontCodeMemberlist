@@ -289,7 +289,7 @@ class UnitTests {
 
     try {
       testRecordReturnText = "  NewFirst Simpson\n";
-      testList1.update("firstName", "NewFirst");
+      testList1.update("First Name", "NewFirst");
     } catch (Exception e) {System.out.println("\n" + e); testError = true;}
     fails += test("Test update firstName Exception", testError, false);
     testError = false;
@@ -303,7 +303,7 @@ class UnitTests {
 
     try {
       testRecordReturnText = "  NewFirst NewLast\n";
-      testList1.update("lastName", "NewLast");
+      testList1.update("Last Name", "NewLast");
     } catch (Exception e) {System.out.println("\n" + e); testError = true;}
     fails += test("Test update lastName Exception", testError, false);
     testError = false;
@@ -317,7 +317,7 @@ class UnitTests {
 
     try {
       testRecordReturnText += "    E-Mail: NewEMail\n";
-      testList1.update("eMail", "NewEMail");
+      testList1.update("E-Mail", "NewEMail");
     } catch (Exception e) {System.out.println("\n" + e); testError = true;}
     fails += test("Test update eMail Exception", testError, false);
     testError = false;
@@ -331,7 +331,7 @@ class UnitTests {
 
     try {
       testRecordReturnText += "    GitHub: NewGitHub\n";
-      testList1.update("githubUserName", "NewGitHub");
+      testList1.update("GitHub Username", "NewGitHub");
     } catch (Exception e) {System.out.println("\n" + e); testError = true;}
     fails += test("Test update githubUserName Exception", testError, false);
     testError = false;
@@ -345,7 +345,7 @@ class UnitTests {
 
     try {
       testRecordReturnText += "    Gitter: NewGitter\n";
-      testList1.update("gitterUserName", "NewGitter");
+      testList1.update("Gitter Username", "NewGitter");
     } catch (Exception e) {System.out.println("\n" + e); testError = true;}
     fails += test("Test update gitterUserName Exception", testError, false);
     testError = false;
@@ -359,7 +359,7 @@ class UnitTests {
 
     try {
       testRecordReturnText += "    FCC: NewFCC\n";
-      testList1.update("fccUserName", "NewFCC");
+      testList1.update("FCC Username", "NewFCC");
     } catch (Exception e) {System.out.println("\n" + e); testError = true;}
     fails += test("Test update fccUserName Exception", testError, false);
     testError = false;

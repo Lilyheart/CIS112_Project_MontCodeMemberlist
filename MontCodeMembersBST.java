@@ -28,17 +28,17 @@ class MontCodeMembersBST {
 
   public void update(String updateKey, String updateValue) throws NoSuchFieldException {
     switch (updateKey) {
-      case "firstName": currentMember.setFirstName(updateValue);
+      case "First Name": currentMember.setFirstName(updateValue);
         break;
-      case "lastName": currentMember.setLastName(updateValue);
+      case "Last Name": currentMember.setLastName(updateValue);
         break;
-      case "eMail": currentMember.setEMail(updateValue);
+      case "E-Mail": currentMember.setEMail(updateValue);
         break;
-      case "githubUserName": currentMember.setGithubUserName(updateValue);
+      case "GitHub Username": currentMember.setGithubUserName(updateValue);
         break;
-      case "gitterUserName": currentMember.setGitterUserName(updateValue);
+      case "Gitter Username": currentMember.setGitterUserName(updateValue);
         break;
-      case "fccUserName": currentMember.setFccUserName(updateValue);
+      case "FCC Username": currentMember.setFccUserName(updateValue);
         break;
       default:
         throw new NoSuchFieldException("The field " + updateKey +

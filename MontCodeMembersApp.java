@@ -142,6 +142,7 @@ public class MontCodeMembersApp  {
   private static void updateSecondaryInformation() {
     int responseInt = -1, maxMenu = 8;
     String responseString = "";
+    String[] updateKeys = {"First Name", "Last Name", "E-Mail", "GitHub Username", "Gitter Username", "FCC Username"};
 
     while(responseInt != maxMenu) {
       responseInt = -1;
@@ -165,38 +166,27 @@ public class MontCodeMembersApp  {
         keyboard.nextLine();
       }
       if(responseInt <= 6) {
-        System.out.print("What would you like to update this to?>> ");
+        System.out.print("What would you like to update the" + updateKeys[responseInt-1] + " to?>> ");
         responseString = keyboard.nextLine();
       }
       try {
-        switch (responseInt) {
-          case 1: memberList.update("firstName", responseString);
-            break;
-          case 2: memberList.update("lastName", responseString);
-            break;
-          case 3: memberList.update("eMail", responseString);
-            break;
-          case 4: memberList.update("githubUserName", responseString);
-            System.out.print("Also set Gitter to " + responseString + "  (y/n)?>> ");
-            if(keyboard.nextLine().toUpperCase().charAt(0) == 'Y') {
-              memberList.update("gitterUserName", responseString);
-            }
-            System.out.print("Also set Free Code Camp to " + responseString + "  (y/n)?>> ");
-            if(keyboard.nextLine().toUpperCase().charAt(0) == 'Y') {
-              memberList.update("fccUserName", responseString);
-            }
-            break;
-          case 5: memberList.update("gitterUserName", responseString);
-            break;
-          case 6: memberList.update("fccUserName", responseString);
-            break;
-          case 7: System.out.println(memberList.getCurrentMember());
-            break;
-          default:
+        if(responseInt <= 6) {
+          memberList.update(updateKeys[responseInt-1], responseString);
         }
-      } catch (NoSuchFieldException e) {
-
-      }
+        if(responseInt == 4) {
+          System.out.print("Also set Gitter to " + responseString + "  (y/n)?>> ");
+          if(keyboard.nextLine().toUpperCase().charAt(0) == 'Y') {
+            memberList.update("gitterUserName", responseString);
+          }
+          System.out.print("Also set Free Code Camp to " + responseString + "  (y/n)?>> ");
+          if(keyboard.nextLine().toUpperCase().charAt(0) == 'Y') {
+            memberList.update("fccUserName", responseString);
+          }
+        }
+        if(responseInt == 7) {
+          System.out.println(memberList.getCurrentMember());
+        }
+      } catch (NoSuchFieldException e) {System.out.println("Not updated. Please try again");}
     }
   }
 
