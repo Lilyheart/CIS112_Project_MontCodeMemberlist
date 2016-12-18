@@ -17,7 +17,8 @@ public class MontCodeMembersApp  {
 
   static void init() {
     int response = -1;
-    File fileName;
+    String fileName;
+    File file;
     boolean isOkay = false;
 
     System.out.println("How would you like to initialize the database?");
@@ -37,12 +38,18 @@ public class MontCodeMembersApp  {
     }
     if(response == 1) {
       while (!isOkay) {
-        System.out.print("Please enter the stored file name (Homework test file=members.dat)>> ");
-        fileName = new File(keyboard.nextLine());
-        if(!fileName.exists()) {
+        System.out.print("Please enter the stored file name (Homework test file=members.ser)>> ");
+        fileName = keyboard.nextLine();
+        file = new File(fileName);
+        if(!file.exists()) {
           System.out.println("--==>>> File does not exist <<<==--");
         } else {
-          memberList = new MontCodeMembersBST(fileName);
+          try {
+            memberList = new MontCodeMembersBST(fileName);
+          } catch (Exception e) {
+            System.out.println("Unable to load file.  Starting new List");
+            memberList = new MontCodeMembersBST();
+          }
           isOkay = true;
         }
       }
@@ -51,15 +58,32 @@ public class MontCodeMembersApp  {
     }
   }
 
+  static void saveToFile() {
+    String fileName;
+
+    //TODO add option to save to existing file in preferences
+    System.out.print("Please enter the name of the file you want to store it in (Homework test file=members.ser)>> ");
+    fileName = keyboard.nextLine();
+    try {
+      memberList.saveToDrive(fileName);
+    } catch (FileNotFoundException e) {
+      System.out.println("Error creating the save file.  Please try again");
+    } catch (IOException e) {
+      System.out.println("Unable to save file.  Please try again.");
+    }
+
+  }
+
   static void mainMenu() {
-    int response = -1, maxMenu = 7;
+    int response = -1, maxMenu = 8;
 
     System.out.println("*** Commands ***");
     while (response < 1 || response > maxMenu) {
       System.out.println("  1: Add a member         2: Update a Member");
       System.out.println("  3: Delete a Member      4: Display a Member's full details");
-      System.out.println("  5: List all Members     6: Fill with Demo Data");
-      System.out.println("  7: Exit Program");
+      System.out.println("  5: List all members");
+      System.out.println("  6: Fill with Demo Data  7: Save to file");
+      System.out.println("  8: Exit Program");
       System.out.print("What now?>> ");
       if(keyboard.hasNextInt()){
         response = keyboard.nextInt();
@@ -84,6 +108,8 @@ public class MontCodeMembersApp  {
       case 5: listAllMembers();
         break;
       case 6: //TODO Fill with Demo Data
+        break;
+      case 7: saveToFile();
         break;
       default: isEndProgram = true;
     }

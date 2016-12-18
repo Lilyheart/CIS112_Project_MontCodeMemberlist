@@ -12,8 +12,8 @@ class MontCodeMembersBST {
     montCodeMembers = new BinarySearchTree<MontCodeMember>();
   }
 
-  public MontCodeMembersBST(File fileName) {
-    //TODO Constructor from file
+  public MontCodeMembersBST(String fileName) throws ClassNotFoundException, FileNotFoundException, IOException {
+    restoreFromDrive(fileName);
   }
 
   public void add(String firstName, String lastName) throws MCRecordDuplicateException {
@@ -22,6 +22,35 @@ class MontCodeMembersBST {
     } else {
       currentMember = new MontCodeMember(firstName, lastName);
       montCodeMembers.add(currentMember);
+    }
+  }
+
+  public void saveToDrive(String fileName) throws FileNotFoundException, IOException {
+    ObjectOutputStream output;
+
+    try {
+      output = new ObjectOutputStream(new FileOutputStream(fileName));
+      output.writeObject(montCodeMembers);
+      output.close();
+    } catch (FileNotFoundException e) {
+      throw new FileNotFoundException("Error: " + e);
+    } catch (IOException e) {
+      throw new IOException("Error: " + e, e);
+    }
+  }
+
+  public void restoreFromDrive(String fileName) throws ClassNotFoundException, FileNotFoundException, IOException {
+    ObjectInputStream input;
+
+    try {
+      input = new ObjectInputStream(new FileInputStream(fileName));
+      montCodeMembers = (BinarySearchTree<MontCodeMember>)input.readObject();
+    } catch (ClassNotFoundException e) {
+      throw new ClassNotFoundException( "Error: " + e);
+    } catch (FileNotFoundException e) {
+      throw new FileNotFoundException("Error: " + e);
+    } catch (IOException e) {
+      throw new IOException("Error: " + e, e);
     }
   }
 
@@ -88,7 +117,7 @@ class MontCodeMembersBST {
 
   public int resetListAllMembers() {
     int numOfMembers;
-
+    //TODO handle empty list
     numOfMembers = montCodeMembers.reset(INORDER);
 
     return numOfMembers;

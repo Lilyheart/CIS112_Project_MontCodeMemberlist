@@ -1,6 +1,6 @@
 import java.net.*;
 
-public class MontCodeMember implements Comparable<MontCodeMember> {
+public class MontCodeMember implements Comparable<MontCodeMember>, java.io.Serializable {
 
   protected String firstName, lastName;
   protected String eMail, githubUserName, gitterUserName, fccUserName;

@@ -22,7 +22,7 @@ class UnitTests {
       return 0;
     } else {
       System.out.println("\n" + testNum + ") " + testName + ": " + "----FAILED");
-      System.out.println("Test:\n" + test + "\nGoal:\n" + goal + "\n");
+      System.out.println("Test:\n" + test + "\nGoal:\n" + goal + "\n----");
     }
     return 1;
   }
@@ -258,13 +258,12 @@ class UnitTests {
     fails += test("Test constructor - testList1", testError, false);
     testError = false;
 
-    // TODO Unit Test: Second constructor from file
-    // MontCodeMembersBST testList2 = null;
-    // try {
-    //   testList2 = new MontCodeMembersBST(testName2[0],testName2[1]);
-    // } catch (Exception e) {System.out.println("\n" + e); testError = true;}
-    // fails += test("Test constructor - testList2", testError, false);
-    // testError = false;
+    MontCodeMembersBST testList2 = null;
+    try {
+      testList2 = new MontCodeMembersBST("unitTestOther.ser");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test constructor - testList2", testError, false);
+    testError = false;
 
     try {
       testList1.add("Anna", "Smith");
@@ -296,6 +295,12 @@ class UnitTests {
       fails += test("Test testList1.add MCRecordDuplicateException Okay", false, false);
     } catch (Exception e) {System.out.println("\n" + e); testError = true;}
     fails += test("Test testList1.add MCRecordDuplicateException Not Okay", testError, false);
+    testError = false;
+
+    try {
+      testList1.saveToDrive("unitTest.ser");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test saveToDrive('unitTest.ser') Exception", testError, false);
     testError = false;
 
     try {
@@ -509,6 +514,26 @@ class UnitTests {
       fails += test("Test getNext QueueUnderflowException Okay", false, false);
     } catch (Exception e) {System.out.println("\n" + e); testError = true;}
     fails += test("Test getNext QueueUnderflowException Not Okay", testError, false);
+    testError = false;
+
+    try {
+      testList1.restoreFromDrive("unitTestOther.ser");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test restoreFromDrive('unitTestOther.ser') Exception", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test resetList OTHER byLastAsc",
+        testList1.resetListAllMembers(), 4);
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test resetList OTHER byLastAsc Exception", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test getNext 6",
+        testList1.getNext().nameToString(), "Susy Doughnut");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test getNext 6 Exception", testError, false);
     testError = false;
 
   }

@@ -7,7 +7,7 @@
 //Removed import and package references to book code
 
 public class BinarySearchTree<T extends Comparable<T>>
-             implements BSTInterface<T>
+             implements BSTInterface<T>, java.io.Serializable
 {
   protected BSTNode<T> root;      // reference to the root of this BST
 
