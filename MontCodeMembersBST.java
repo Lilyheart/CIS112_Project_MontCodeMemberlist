@@ -1,15 +1,17 @@
 import java.io.*;
 
 class MontCodeMembersBST {
-  private BinarySearchTree<MontCodeMember> montCodeMembers;
+  private BinarySearchTreeReverseable<MontCodeMember> montCodeMembers;
   private MontCodeMember currentMember;
 
   static final int INORDER = 1;
   static final int PREORDER = 2;
   static final int POSTORDER = 3;
+  static final int INORDER_REV = 4;
+  static int sortType;
 
   public MontCodeMembersBST() {
-    montCodeMembers = new BinarySearchTree<MontCodeMember>();
+    montCodeMembers = new BinarySearchTreeReverseable<MontCodeMember>();
   }
 
   public MontCodeMembersBST(String fileName) throws ClassNotFoundException, FileNotFoundException, IOException {
@@ -44,7 +46,7 @@ class MontCodeMembersBST {
 
     try {
       input = new ObjectInputStream(new FileInputStream(fileName));
-      montCodeMembers = (BinarySearchTree<MontCodeMember>)input.readObject();
+      montCodeMembers = (BinarySearchTreeReverseable<MontCodeMember>)input.readObject();
     } catch (ClassNotFoundException e) {
       throw new ClassNotFoundException( "Error: " + e);
     } catch (FileNotFoundException e) {
@@ -115,15 +117,16 @@ class MontCodeMembersBST {
     }
   }
 
-  public int resetListAllMembers() {
+  public int reset(String orderBy) {
     int numOfMembers;
-    //TODO handle empty list
-    numOfMembers = montCodeMembers.reset(INORDER);
+
+    sortType = INORDER;
+    numOfMembers = montCodeMembers.reset(sortType);
 
     return numOfMembers;
   }
 
   public MontCodeMember getNext() {
-    return montCodeMembers.getNext(INORDER);
+    return montCodeMembers.getNext(sortType);
   }
 }

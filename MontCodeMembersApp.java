@@ -2,8 +2,8 @@ import java.util.Scanner;
 import java.io.*;
 
 public class MontCodeMembersApp  {
-  static boolean isEndProgram = false;
   static Scanner keyboard = new Scanner(System.in);
+  static boolean isEndProgram = false;
   static MontCodeMembersBST memberList;
 
   public static void main(String[] args) {
@@ -59,31 +59,22 @@ public class MontCodeMembersApp  {
   }
 
   static void saveToFile() {
-    String fileName;
-
     //TODO add option to save to existing file in preferences
     System.out.print("Please enter the name of the file you want to store it in (Homework test file=members.ser)>> ");
-    fileName = keyboard.nextLine();
-    try {
-      memberList.saveToDrive(fileName);
-    } catch (FileNotFoundException e) {
-      System.out.println("Error creating the save file.  Please try again");
-    } catch (IOException e) {
-      System.out.println("Unable to save file.  Please try again.");
-    }
-
+    //TODO fileName = new File(keyboard.nextLine());
+    //TODO memberList.saveToDrive(fileName);
   }
 
   static void mainMenu() {
-    int response = -1, maxMenu = 8;
+    int response = -1, maxMenu = 9;
 
     System.out.println("*** Commands ***");
     while (response < 1 || response > maxMenu) {
       System.out.println("  1: Add a member         2: Update a Member");
       System.out.println("  3: Delete a Member      4: Display a Member's full details");
-      System.out.println("  5: List all members");
-      System.out.println("  6: Fill with Demo Data  7: Save to file");
-      System.out.println("  8: Exit Program");
+      System.out.println("  5: List all members     6: Change List Options");
+      System.out.println("  7: Fill with Demo Data  8: Save to file");
+      System.out.println("  9: Exit Program");
       System.out.print("What now?>> ");
       if(keyboard.hasNextInt()){
         response = keyboard.nextInt();
@@ -107,9 +98,11 @@ public class MontCodeMembersApp  {
         break;
       case 5: listAllMembers();
         break;
-      case 6: //TODO Fill with Demo Data
+      case 6: listOptions();
         break;
-      case 7: saveToFile();
+      case 7: //TODO Fill with Demo Data
+        break;
+      case 8: saveToFile();
         break;
       default: isEndProgram = true;
     }
@@ -234,10 +227,102 @@ public class MontCodeMembersApp  {
     }
   }
 
+  //TODO listOptions()
+  static void listOptions() {
+    int responseInt;
+    String responseString;
+
+    responseInt = -1;
+    System.out.println("*** What would you like to sort by? ***");
+    while (responseInt < 1 || responseInt > 4) {
+      System.out.println("  1: Last Name Asc    2: Last Name Dec");
+      System.out.println("  3: First Name Asc   4: First Name Dec");
+      System.out.print("What now?>> ");
+      if(keyboard.hasNextInt()){
+        responseInt = keyboard.nextInt();
+        if(responseInt < 1 || responseInt > 4) {
+          System.out.println(">> Input a valid option.");
+        }
+      } else {
+        System.out.println(">> You didn't input a number.  " +
+          "Please input a number");
+      }
+      keyboard.nextLine();
+    }
+    switch (responseInt) {
+      case 1:
+        break;
+      case 2:
+        break;
+      case 3:
+        break;
+      case 4:
+        break;
+
+    }
+
+    //TODO deal with selection
+    // TODO Change other y/n places
+    // while (responseString != 'Y' || responseString != 'N') {
+    //   System.out.println("Would you like to store this as a preference (y/n)?");
+    //   responseString = keyboard.nextLine().toUpperCase().charAt(0);
+    //   if(responseString == 'Y') {
+    //     //TODO prefs.put("SEARCH", "byLastAsc");
+    //   } else if(responseString != 'N') {
+    //     //TODO Error handleing
+    //   }
+    // }
+  }
+
   static void listAllMembers() {
+    //TODO listOption = prefs.get("SEARCH", "byLastAsc");
+    String listOption = "byLastAsc";
+
+    //TODO List Options
+    switch (listOption) {
+      case "byLastAsc": listAllMembersByLastAsc();
+        break;
+      case "byLastDec": listAllMembersByLastDec();
+        break;
+      case "byFirstAsc": listAllMembersByFirstAsc();
+        break;
+      case "byFirstDec":listAllMembersByFirstDec();
+        break;
+      default: listAllMembersByLastAsc();
+    }
+  }
+
+  static void listAllMembersByLastAsc() {
     int numOfMembers;
 
-    numOfMembers = memberList.resetListAllMembers();
+    numOfMembers = memberList.reset("byLastAsc");
+    for (int i = 0; i < numOfMembers; i++) {
+      System.out.println(memberList.getNext().nameToString());
+    }
+  }
+
+  static void listAllMembersByLastDec() {
+    int numOfMembers;
+
+    numOfMembers = memberList.reset("byLastDec");
+    for (int i = 0; i < numOfMembers; i++) {
+      System.out.println(memberList.getNext().nameToString());
+    }
+  }
+
+  static void listAllMembersByFirstAsc() {
+    int numOfMembers;
+
+    numOfMembers = memberList.reset("byFirstAsc");
+    for (int i = 0; i < numOfMembers; i++) {
+      System.out.println(memberList.getNext().nameToString());
+    }
+  }
+
+  static void listAllMembersByFirstDec() {
+    int numOfMembers;
+
+    numOfMembers = memberList.reset("byFirstDec");
     for (int i = 0; i < numOfMembers; i++) {
       System.out.println(memberList.getNext().nameToString());
     }

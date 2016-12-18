@@ -488,10 +488,10 @@ class UnitTests {
     testError = false;
 
     try {
-      fails += test("Test resetListAllMembers",
-        testList1.resetListAllMembers(), 2);
+      fails += test("Test resetList byLastAsc",
+        testList1.reset("byLastAsc"), 2);
     } catch (Exception e) {System.out.println("\n" + e); testError = true;}
-    fails += test("Test resetListAllMembers Exception", testError, false);
+    fails += test("Test resetList byLastAsc Exception", testError, false);
     testError = false;
 
     try {
@@ -517,6 +517,75 @@ class UnitTests {
     testError = false;
 
     try {
+      testList1.add("Bob", "Wilber");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test testList1.add 2 Exception", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test resetList byLastDec",
+        testList1.reset("byLastDec"), 3);
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test resetList byLastDec Exception", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test getNext 3",
+        testList1.getNext().nameToString(), "Bob Wilber");
+        testList1.getNext();
+        testList1.getNext();
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test getNext 3 Exception", testError, false);
+    testError = false;
+
+    try {
+      testList1.add("Anna", "Smith");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test testList1.add 2 Exception", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test resetList byFirstAsc",
+        testList1.reset("byFirstAsc"), 4);
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test resetList byFirstAsc Exception", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test getNext 4",
+        testList1.getNext().nameToString(), "Anna Smith");
+        testList1.getNext();
+        testList1.getNext();
+        testList1.getNext();
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test getNext 4 Exception", testError, false);
+    testError = false;
+
+    try {
+      testList1.add("Mike", "Jones");
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test testList1.add 2 Exception", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test resetList byFirstDec",
+        testList1.reset("byFirstDec"), 5);
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test resetList byFirstDec Exception", testError, false);
+    testError = false;
+
+    try {
+      fails += test("Test getNext 5",
+        testList1.getNext().nameToString(), "Mike Jones");
+        testList1.getNext();
+        testList1.getNext();
+        testList1.getNext();
+        testList1.getNext();
+    } catch (Exception e) {System.out.println("\n" + e); testError = true;}
+    fails += test("Test getNext 5 Exception", testError, false);
+    testError = false;
+
+    try {
       testList1.restoreFromDrive("unitTestOther.ser");
     } catch (Exception e) {System.out.println("\n" + e); testError = true;}
     fails += test("Test restoreFromDrive('unitTestOther.ser') Exception", testError, false);
@@ -524,7 +593,7 @@ class UnitTests {
 
     try {
       fails += test("Test resetList OTHER byLastAsc",
-        testList1.resetListAllMembers(), 4);
+        testList1.reset("byLastAsc"), 4);
     } catch (Exception e) {System.out.println("\n" + e); testError = true;}
     fails += test("Test resetList OTHER byLastAsc Exception", testError, false);
     testError = false;
