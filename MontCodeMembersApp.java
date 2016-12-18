@@ -68,7 +68,7 @@ public class MontCodeMembersApp  {
   static void mainMenu() {
     int response = -1, maxMenu = 9;
 
-    System.out.println("*** Commands ***");
+    System.out.println("\n\n*** Commands ***");
     while (response < 1 || response > maxMenu) {
       System.out.println("  1: Add a member         2: Update a Member");
       System.out.println("  3: Delete a Member      4: Display a Member's full details");
@@ -296,6 +296,10 @@ public class MontCodeMembersApp  {
     int numOfMembers;
 
     numOfMembers = memberList.reset("byLastAsc");
+    if(numOfMembers == 0) {
+      System.out.println("There are no members in the list.");
+      return;
+    }
     for (int i = 0; i < numOfMembers; i++) {
       System.out.println(memberList.getNext().nameToString());
     }
@@ -305,6 +309,10 @@ public class MontCodeMembersApp  {
     int numOfMembers;
 
     numOfMembers = memberList.reset("byLastDec");
+    if(numOfMembers == 0) {
+      System.out.println("There are no members in the list.");
+      return;
+    }
     for (int i = 0; i < numOfMembers; i++) {
       System.out.println(memberList.getNext().nameToString());
     }
@@ -314,6 +322,10 @@ public class MontCodeMembersApp  {
     int numOfMembers;
 
     numOfMembers = memberList.reset("byFirstAsc");
+    if(numOfMembers == 0) {
+      System.out.println("There are no members in the list.");
+      return;
+    }
     for (int i = 0; i < numOfMembers; i++) {
       System.out.println(memberList.getNext().nameToString());
     }
@@ -323,6 +335,10 @@ public class MontCodeMembersApp  {
     int numOfMembers;
 
     numOfMembers = memberList.reset("byFirstDec");
+    if(numOfMembers == 0) {
+      System.out.println("There are no members in the list.");
+      return;
+    }
     for (int i = 0; i < numOfMembers; i++) {
       System.out.println(memberList.getNext().nameToString());
     }

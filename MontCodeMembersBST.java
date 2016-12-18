@@ -4,10 +4,10 @@ class MontCodeMembersBST {
   private BinarySearchTreeReverseable<MontCodeMember> montCodeMembers;
   private MontCodeMember currentMember;
 
-  static final int INORDER = 1;
-  static final int PREORDER = 2;
-  static final int POSTORDER = 3;
-  static final int INORDER_REV = 4;
+  static final int LASTNAME_ASC = 1;
+  static final int LASTNAME_DEC = 4;
+  static final int FIRSTNAME_ASC = 5;
+  static final int FIRSTNAME_DEC = 6;
   static int sortType;
   static int addsSinceBalance;
 
@@ -126,15 +126,35 @@ class MontCodeMembersBST {
   }
 
   public int reset(String orderBy) {
-    int numOfMembers;
+    int numOfMembers = 0;
 
-    sortType = INORDER;
-    numOfMembers = montCodeMembers.reset(sortType);
+    switch (orderBy) {
+      case "byLastAsc": sortType = LASTNAME_ASC;
+        numOfMembers = montCodeMembers.reset(LASTNAME_ASC);
+        break;
+      case "byLastDec": sortType = LASTNAME_DEC;
+        numOfMembers = montCodeMembers.reset(LASTNAME_DEC);
+        break;
+      case "byFirstAsc": sortType = FIRSTNAME_ASC;
+        numOfMembers = montCodeMembers.size();
+        //TODO Create new datastructure
+        break;
+      case "byFirstDec": sortType = FIRSTNAME_DEC;
+        numOfMembers = montCodeMembers.size();
+        //TODO Create new datastructure
+        break;
+      default:
+    }
 
     return numOfMembers;
   }
 
   public MontCodeMember getNext() {
-    return montCodeMembers.getNext(sortType);
+    if(sortType <= 4) {
+      return montCodeMembers.getNext(sortType);
+    } else {
+      //TODO Create new methods
+      return montCodeMembers.getNext(sortType);
+    }
   }
 }

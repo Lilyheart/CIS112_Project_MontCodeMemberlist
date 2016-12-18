@@ -18,7 +18,7 @@ class UnitTests {
   static int test(String testName, Object test, Object goal){
     testNum++;
     if(test.equals(goal)){
-      System.out.println(testNum + ") " + testName + ": " + "Passed");
+      // System.out.println(testNum + ") " + testName + ": " + "Passed");
       return 0;
     } else {
       System.out.println("\n" + testNum + ") " + testName + ": " + "----FAILED");
