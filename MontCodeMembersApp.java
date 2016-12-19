@@ -69,7 +69,7 @@ public class MontCodeMembersApp  {
     }
     if(response == 1) {
       while (!isOkay) {
-        System.out.print("Please enter the stored file name (Homework test file="+
+        System.out.print("Please enter the stored file name (Default file="+
           prefs.getDefaultFile()+")>> ");
         fileName = keyboard.nextLine();
         if(fileName == null || fileName.isEmpty()) {
@@ -321,8 +321,51 @@ public class MontCodeMembersApp  {
   }
 
   static void displayMember() {
+    int responseInt = -1;
+
     findMember();
     displayConfirmationMessage("\n" + memberList.getCurrentMember() + "\n");
+
+    System.out.println("*** User found ***");
+    while (responseInt < 1 || responseInt > 6) {
+      System.out.println("  1: Update Member    2: Delete Member");
+      System.out.println("  3: Send EMail       4: Open GitHub");
+      System.out.println("  5: Open Gitter      6: Open FreeCode Camp");
+      System.out.println("  7: Nothing.  Return to main menu");
+      System.out.print("What now?>> ");
+      if(keyboard.hasNextInt()){
+        responseInt = keyboard.nextInt();
+        if(responseInt < 1 || responseInt > 7) {
+          System.out.println(">> Input a valid option.");
+        }
+      } else {
+        System.out.println(">> You didn't input a number.  " +
+          "Please input a number");
+      }
+      keyboard.nextLine();
+      switch (responseInt) {
+        case 1:
+          updateSecondaryInformation();
+          break;
+        case 2:
+          memberList.removeCurrentMember();
+          displayConfirmationMessage("User was deleted");
+          break;
+        case 3:
+          memberList.getCurrentMember().sendEMail();
+          break;
+        case 4:
+          memberList.getCurrentMember().openGitHub();
+          break;
+        case 5:
+          memberList.getCurrentMember().sendGitter();
+          break;
+        case 6:
+          memberList.getCurrentMember().openFCC();
+          break;
+
+      }
+    }
   }
 
   static void listOptions() {
@@ -455,11 +498,11 @@ public class MontCodeMembersApp  {
       }
     }
 
-    while (response < 1) {
+    while (response < 0) {
       System.out.print("How many records would you like to add?>> ");
       if(keyboard.hasNextInt()){
         response = keyboard.nextInt();
-        if(response < 1 ) {
+        if(response < 0 ) {
           System.out.println(">> Input a valid option.");
         }
       } else {
@@ -484,7 +527,7 @@ public class MontCodeMembersApp  {
     char responseChar;
 
     System.out.print("Please enter the name of the file you want to store it in " +
-      "(Homework test file="+prefs.getDefaultFile()+")>> ");
+      "(Default file="+prefs.getDefaultFile()+")>> ");
     fileName = keyboard.nextLine();
     if(fileName == null || fileName.isEmpty()) {
       fileName = prefs.getDefaultFile();

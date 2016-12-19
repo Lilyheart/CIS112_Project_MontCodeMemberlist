@@ -34,6 +34,7 @@ class MontCodeMembersBST {
       montCodeMembers.add(currentMember);
     }
     if(addsSinceBalance >= 10) {
+      //IDEA better algorithm for when to rebalance
       montCodeMembers.balance();
       addsSinceBalance = 0;
     }

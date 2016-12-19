@@ -46,8 +46,8 @@ class UnitTestSerCreator {
     montCodeMembers.balance();
 
     Scanner keyboard = new Scanner(System.in);
-    System.out.println("\n\n\n>>Balance Okay?");
-    String response = keyboard.nextLine();
+//     System.out.println("\n\n\n>>Balance Okay?");
+//     String response = keyboard.nextLine();
 
   }
 
