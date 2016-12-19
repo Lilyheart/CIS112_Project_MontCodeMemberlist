@@ -6,7 +6,7 @@
 
 //Removed import and package references to book code
 
-public class LinkedUnbndQueue<T> implements QueueUnboundedInterface<T>
+public class LinkedUnbndQueue<T> implements QueueUnboundedInterface<T>, java.io.Serializable
 {
   protected LLNode<T> front;   // reference to the front of this queue
   protected LLNode<T> rear;    // reference to the rear of this queue

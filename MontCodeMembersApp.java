@@ -5,6 +5,7 @@ public class MontCodeMembersApp  {
   static Scanner keyboard = new Scanner(System.in);
   static boolean isEndProgram = false;
   static MontCodeMembersBST memberList;
+  static MockDataMaker mockData = null;
 
   public static void main(String[] args) {
     System.out.println("Welcome to the MontCode Member Contact Manager");
@@ -13,6 +14,7 @@ public class MontCodeMembersApp  {
     while(!isEndProgram) {
       mainMenu();
     }
+    //IDEA prompt to saveToFile if unsaved changes
   }
 
   static void init() {
@@ -40,6 +42,9 @@ public class MontCodeMembersApp  {
       while (!isOkay) {
         System.out.print("Please enter the stored file name (Homework test file=members.ser)>> ");
         fileName = keyboard.nextLine();
+        if(fileName == null || fileName.isEmpty()) {
+          fileName = "members.ser";
+        }
         file = new File(fileName);
         if(!file.exists()) {
           System.out.println("--==>>> File does not exist <<<==--");
@@ -58,11 +63,27 @@ public class MontCodeMembersApp  {
     }
   }
 
-  static void saveToFile() {
-    //TODO add option to save to existing file in preferences
-    System.out.print("Please enter the name of the file you want to store it in (Homework test file=members.ser)>> ");
-    //TODO fileName = new File(keyboard.nextLine());
-    //TODO memberList.saveToDrive(fileName);
+  static void displayConfirmationMessage(String message) {
+    System.out.println(">>>>> " + message + " <<<<<");
+    System.out.println("Press any key to continue");
+    keyboard.nextLine();
+  }
+
+  static boolean findMember() {
+    String firstName, lastName;
+    boolean isFound = true;
+
+    System.out.print("Please enter the first name>> ");
+    firstName = keyboard.nextLine();
+    System.out.print("Please enter the last name>> ");
+    lastName = keyboard.nextLine();
+    try {
+      memberList.setCurrentMember(firstName, lastName);
+    } catch (MCRecordNotFoundException e) {
+      return false;
+    }
+
+    return isFound;
   }
 
   static void mainMenu() {
@@ -100,29 +121,12 @@ public class MontCodeMembersApp  {
         break;
       case 6: listOptions();
         break;
-      case 7: //TODO Fill with Demo Data
+      case 7: demoData();
         break;
       case 8: saveToFile();
         break;
       default: isEndProgram = true;
     }
-  }
-
-  private static boolean findMember() {
-    String firstName, lastName;
-    boolean isFound = true;
-
-    System.out.print("Please enter the first name>> ");
-    firstName = keyboard.nextLine();
-    System.out.print("Please enter the last name>> ");
-    lastName = keyboard.nextLine();
-    try {
-      memberList.setCurrentMember(firstName, lastName);
-    } catch (MCRecordNotFoundException e) {
-      return false;
-    }
-
-    return isFound;
   }
 
   static void addMember() {
@@ -134,6 +138,7 @@ public class MontCodeMembersApp  {
     lastName = keyboard.nextLine();
     try {
       memberList.add(firstName, lastName);
+      displayConfirmationMessage(firstName + " " + lastName + " added.  Please update secondary information.");
       updateSecondaryInformation();
       System.out.println("Added: \n" + memberList.getCurrentMember());
     } catch (MCRecordDuplicateException e) {
@@ -147,11 +152,6 @@ public class MontCodeMembersApp  {
     }
   }
 
-  static void displayMember() {
-    findMember();
-    System.out.println(memberList.getCurrentMember());
-  }
-
   static void updateMember() {
     findMember();
     updateSecondaryInformation();
@@ -160,16 +160,18 @@ public class MontCodeMembersApp  {
 
   private static void updateSecondaryInformation() {
     int responseInt = -1, maxMenu = 8;
-    String responseString = "";
+    String responseString = "", moreText;
     String[] updateKeys = {"First Name", "Last Name", "E-Mail", "GitHub Username", "Gitter Username", "FCC Username"};
+    int changesMade = 0;
 
     while(responseInt != maxMenu) {
       responseInt = -1;
+      moreText = null;
       System.out.println("*** What would you like to update? ***");
       while (responseInt < 1 || responseInt > maxMenu) {
-        System.out.println("  1: First Name       2: Last Name");
-        System.out.println("  3: eMail            4: GitHub userID");
-        System.out.println("  5: Gitter userID    6: Free Code Camp user ID");
+        System.out.println("  1: First Name        2: Last Name");
+        System.out.println("  3: E-Mail            4: GitHub Username");
+        System.out.println("  5: Gitter Username   6: FCC Username");
         System.out.println("  7: Display current contact card");
         System.out.println("  8: None - End updating information");
         System.out.print("What now?>> ");
@@ -185,21 +187,38 @@ public class MontCodeMembersApp  {
         keyboard.nextLine();
       }
       if(responseInt <= 6) {
-        System.out.print("What would you like to update the" + updateKeys[responseInt-1] + " to?>> ");
+        System.out.print("What would you like to update the " + updateKeys[responseInt-1] + " to?>> ");
         responseString = keyboard.nextLine();
       }
       try {
         if(responseInt <= 6) {
           memberList.update(updateKeys[responseInt-1], responseString);
+          changesMade++;
+          if(responseInt != 4) {
+            displayConfirmationMessage("The " + updateKeys[responseInt-1] + " was updated.");
+          }
         }
         if(responseInt == 4) {
           System.out.print("Also set Gitter to " + responseString + "  (y/n)?>> ");
           if(keyboard.nextLine().toUpperCase().charAt(0) == 'Y') {
-            memberList.update("gitterUserName", responseString);
+            memberList.update("Gitter Username", responseString);
+            changesMade++;
+            moreText = " and Gitter Username";
           }
           System.out.print("Also set Free Code Camp to " + responseString + "  (y/n)?>> ");
           if(keyboard.nextLine().toUpperCase().charAt(0) == 'Y') {
-            memberList.update("fccUserName", responseString);
+            memberList.update("FCC Username", responseString);
+            changesMade++;
+            if(moreText == null) {
+              moreText = " and FCC Username";
+            } else {
+              moreText = ", Gitter Username and FCC Username";
+            }
+          }
+          if(moreText == null) {
+            displayConfirmationMessage("The " + updateKeys[responseInt-1] + " was updated.");
+          } else {
+            displayConfirmationMessage("The " + updateKeys[responseInt-1] + moreText + " were updated.");
           }
         }
         if(responseInt == 7) {
@@ -207,11 +226,23 @@ public class MontCodeMembersApp  {
         }
       } catch (NoSuchFieldException e) {System.out.println("Not updated. Please try again");}
     }
+    if(changesMade == 0) {
+      displayConfirmationMessage("No information was updated");
+    } else if (changesMade == 1) {
+      displayConfirmationMessage(changesMade + " update was processed.");
+    } else  {
+      displayConfirmationMessage(changesMade + " updates were processed.");
+    }
   }
 
   static void deleteMember() {
     boolean isFound;
+    String confirmationMessage = "Sucessfully deleted";
 
+    if(memberList.size()== 0) {
+      displayConfirmationMessage("There are currently no members in the database to delete");
+      return;
+    }
     isFound = findMember();
     if(isFound) {
       System.out.println("User Found: \n" + memberList.getCurrentMember());
@@ -220,14 +251,19 @@ public class MontCodeMembersApp  {
         memberList.removeCurrentMember();
       }
     } else {
-      System.out.println("****************************");
-      System.out.println("* This user was not Found! *");
-      System.out.println("*    No one was deleted    *");
-      System.out.println("****************************\n");
+      confirmationMessage = "**************************** <<<<<\n"
+                          + ">>>>> * This user was not Found! * <<<<<\n"
+                          + ">>>>> *    No one was deleted    * <<<<<\n"
+                          + ">>>>> ****************************";
     }
+    displayConfirmationMessage(confirmationMessage);
   }
 
-  //TODO listOptions()
+  static void displayMember() {
+    findMember();
+    displayConfirmationMessage("\n" + memberList.getCurrentMember() + "\n");
+  }
+
   static void listOptions() {
     int responseInt;
     String responseString;
@@ -236,7 +272,7 @@ public class MontCodeMembersApp  {
     System.out.println("*** What would you like to sort by? ***");
     while (responseInt < 1 || responseInt > 4) {
       System.out.println("  1: Last Name Asc    2: Last Name Dec");
-      System.out.println("  3: First Name Asc   4: First Name Dec");
+      //IDEA System.out.println("  3: First Name Asc   4: First Name Dec");
       System.out.print("What now?>> ");
       if(keyboard.hasNextInt()){
         responseInt = keyboard.nextInt();
@@ -254,10 +290,10 @@ public class MontCodeMembersApp  {
         break;
       case 2:
         break;
-      case 3:
-        break;
-      case 4:
-        break;
+      // case 3:
+      //   break;
+      // case 4:
+      //   break;
 
     }
 
@@ -284,12 +320,15 @@ public class MontCodeMembersApp  {
         break;
       case "byLastDec": listAllMembersByLastDec();
         break;
-      case "byFirstAsc": listAllMembersByFirstAsc();
-        break;
-      case "byFirstDec":listAllMembersByFirstDec();
-        break;
+      // IDEA Sorts by First Name
+      // case "byFirstAsc": listAllMembersByFirstAsc();
+      //   break;
+      // case "byFirstDec":listAllMembersByFirstDec();
+      //   break;
       default: listAllMembersByLastAsc();
     }
+
+    displayConfirmationMessage("Displayed all " + memberList.size() + " members.");
   }
 
   static void listAllMembersByLastAsc() {
@@ -301,6 +340,13 @@ public class MontCodeMembersApp  {
       return;
     }
     for (int i = 0; i < numOfMembers; i++) {
+      if(i % 10 == 0 && i != 0) {
+        System.out.println(">>>>> Enter X to cancel or any key other for the next page");
+        String responseString = keyboard.nextLine();
+        if(responseString.toUpperCase().equals("X")) {
+          return;
+        }
+      }
       System.out.println(memberList.getNext().nameToString());
     }
   }
@@ -318,30 +364,62 @@ public class MontCodeMembersApp  {
     }
   }
 
-  static void listAllMembersByFirstAsc() {
-    int numOfMembers;
+  //IDEA static void listAllMembersByFirstAsc() {}
 
-    numOfMembers = memberList.reset("byFirstAsc");
-    if(numOfMembers == 0) {
-      System.out.println("There are no members in the list.");
-      return;
+  //IDEA static void listAllMembersByFirstDec() {}
+
+  static void demoData() {
+    int response = -1;
+    if(mockData == null) {
+      try {
+        mockData = new MockDataMaker();
+      } catch (IOException e) {
+        System.out.println("Error opening MockData file.  Add MOCK_DATA.dat and try again");
+      }
     }
-    for (int i = 0; i < numOfMembers; i++) {
-      System.out.println(memberList.getNext().nameToString());
+
+    while (response < 1) {
+      System.out.print("How many records would you like to add?>> ");
+      if(keyboard.hasNextInt()){
+        response = keyboard.nextInt();
+        if(response < 1 ) {
+          System.out.println(">> Input a valid option.");
+        }
+      } else {
+        System.out.println(">> You didn't input a number.  " +
+          "Please input a number");
+      }
+      keyboard.nextLine();
     }
+
+    try {
+      System.out.println("Please wait.  Adding demo users...");
+      response = mockData.add(memberList, response);
+      displayConfirmationMessage(response + " users added");
+    } catch (NoMoreDemoDataException e) {
+      displayConfirmationMessage(e.getMessage());
+    }
+
   }
 
-  static void listAllMembersByFirstDec() {
-    int numOfMembers;
-
-    numOfMembers = memberList.reset("byFirstDec");
-    if(numOfMembers == 0) {
-      System.out.println("There are no members in the list.");
+  static void saveToFile() {
+    String fileName = null;
+    //TODO add option to save to existing file in preferences
+    System.out.print("Please enter the name of the file you want to store it in (Homework test file=members.ser)>> ");
+    fileName = keyboard.nextLine();
+    if(fileName == null || fileName.isEmpty()) {
+      fileName = "members.ser";
+    }
+    try {
+      memberList.saveToDrive(fileName);
+    } catch (Exception e) {
+      displayConfirmationMessage("File could not be saved.  Please try again with a new file name. " + e);
       return;
     }
-    for (int i = 0; i < numOfMembers; i++) {
-      System.out.println(memberList.getNext().nameToString());
-    }
+
+    displayConfirmationMessage("File saved.");
   }
+
+  //IDEA static void loadFromFile() {}
 
 }

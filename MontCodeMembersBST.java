@@ -21,6 +21,10 @@ class MontCodeMembersBST {
     restoreFromDrive(fileName);
   }
 
+  public int size() {
+    return montCodeMembers.size();
+  }
+
   public void add(String firstName, String lastName) throws MCRecordDuplicateException {
     addsSinceBalance++;
     if(contains(firstName, lastName)) {
@@ -47,6 +51,8 @@ class MontCodeMembersBST {
     } catch (IOException e) {
       throw new IOException("Error: " + e, e);
     }
+
+    output.close();
   }
 
   public void restoreFromDrive(String fileName) throws ClassNotFoundException, FileNotFoundException, IOException {

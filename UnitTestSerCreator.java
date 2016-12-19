@@ -14,25 +14,25 @@ class UnitTestSerCreator {
     montCodeMembers.add(new MontCodeMember("Omar", "Gurd"));
     montCodeMembers.add(new MontCodeMember("Frank", "Grimes"));
 
-    // try {
-    //   output = new ObjectOutputStream(new FileOutputStream("unitTestOther.ser"));
-    //   output.writeObject(montCodeMembers);
-    //   output.close();
-    // } catch (Exception e) {
-    //   System.out.print("AGHTHTH");
-    // }
-    //
-    // montCodeMembers = null;
-    //
-    // try {
-    //   input = new ObjectInputStream(new FileInputStream("unitTestOther.ser"));
-    //   montCodeMembers = (BinarySearchTreeReverseable<MontCodeMember>)input.readObject();
-    // } catch (Exception e) {
-    //   System.out.println(e);
-    //   System.out.print("AGHTHTH\n\n");
-    // }
-    //
-    // System.out.print(montCodeMembers);
+    try {
+      output = new ObjectOutputStream(new FileOutputStream("unitTestOther.ser"));
+      output.writeObject(montCodeMembers);
+      output.close();
+    } catch (Exception e) {
+      System.out.print("AGHTHTH");
+    }
+
+    montCodeMembers = null;
+
+    try {
+      input = new ObjectInputStream(new FileInputStream("unitTestOther.ser"));
+      montCodeMembers = (BinarySearchTreeReverseable<MontCodeMember>)input.readObject();
+    } catch (Exception e) {
+      System.out.println(e);
+      System.out.print("AGHTHTH\n\n");
+    }
+
+    System.out.print(montCodeMembers);
 
     montCodeMembers.add(new MontCodeMember("Toni", "Evans"));
     montCodeMembers.add(new MontCodeMember("Olga", "Robinson"));
@@ -46,7 +46,7 @@ class UnitTestSerCreator {
     montCodeMembers.balance();
 
     Scanner keyboard = new Scanner(System.in);
-    System.out.println("Okay?");
+    System.out.println("\n\n\n>>Balance Okay?");
     String response = keyboard.nextLine();
 
   }

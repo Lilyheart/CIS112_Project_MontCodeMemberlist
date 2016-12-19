@@ -12,7 +12,7 @@
 
 //Removed import and package references to book code
 
-public class ArrayIndexedList<T> extends ArrayUnsortedList<T>
+public class ArrayIndexedList<T> extends ArrayUnsortedList<T> implements java.io.Serializable
 {
   public ArrayIndexedList()
   {
