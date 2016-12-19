@@ -5,7 +5,9 @@ public class MontCodeMembersApp  {
   static Scanner keyboard = new Scanner(System.in);
   static boolean isEndProgram = false;
   static MontCodeMembersBST memberList;
+  static MontCodePreferences prefs;
   static MockDataMaker mockData = null;
+  static final String PERFFILENAME = "MontCodePreferences.ser";
 
   public static void main(String[] args) {
     System.out.println("Welcome to the MontCode Member Contact Manager");
@@ -15,6 +17,16 @@ public class MontCodeMembersApp  {
       mainMenu();
     }
     //IDEA prompt to saveToFile if unsaved changes
+    ObjectOutputStream output;
+    try {
+      output = new ObjectOutputStream(new FileOutputStream(PERFFILENAME));
+      output.writeObject(prefs);
+      output.close();
+      displayConfirmationMessage("Preferences have been saved.");
+    } catch (Exception e) {
+      displayConfirmationMessage("Preferences could not be saved.");
+    }
+
   }
 
   static void init() {
@@ -22,6 +34,23 @@ public class MontCodeMembersApp  {
     String fileName;
     File file;
     boolean isOkay = false;
+
+    file = new File(PERFFILENAME);
+    if(file.exists()) {
+      ObjectInputStream input;
+      try {
+        input = new ObjectInputStream(new FileInputStream(PERFFILENAME));
+        prefs = (MontCodePreferences)input.readObject();
+        displayConfirmationMessage("Preferences have been loaded.");
+        input.close();
+      } catch (Exception e) {
+        displayConfirmationMessage("Unable to load preferences file.  Creating new file.");
+        prefs = new MontCodePreferences();
+      }
+    } else {
+      prefs = new MontCodePreferences();
+      displayConfirmationMessage("New preferences have been created.");
+    }
 
     System.out.println("How would you like to initialize the database?");
     while (response < 1 || response > 2) {
@@ -40,10 +69,11 @@ public class MontCodeMembersApp  {
     }
     if(response == 1) {
       while (!isOkay) {
-        System.out.print("Please enter the stored file name (Homework test file=members.ser)>> ");
+        System.out.print("Please enter the stored file name (Homework test file="+
+          prefs.getDefaultFile()+")>> ");
         fileName = keyboard.nextLine();
         if(fileName == null || fileName.isEmpty()) {
-          fileName = "members.ser";
+          fileName = prefs.getDefaultFile();
         }
         file = new File(fileName);
         if(!file.exists()) {
@@ -51,6 +81,7 @@ public class MontCodeMembersApp  {
         } else {
           try {
             memberList = new MontCodeMembersBST(fileName);
+            displayConfirmationMessage("Members have been loaded");
           } catch (Exception e) {
             System.out.println("Unable to load file.  Starting new List");
             memberList = new MontCodeMembersBST();
@@ -65,7 +96,7 @@ public class MontCodeMembersApp  {
 
   static void displayConfirmationMessage(String message) {
     System.out.println(">>>>> " + message + " <<<<<");
-    System.out.println("Press any key to continue");
+    System.out.println("Enter any key to continue");
     keyboard.nextLine();
   }
 
@@ -131,6 +162,7 @@ public class MontCodeMembersApp  {
 
   static void addMember() {
     String firstName, lastName;
+    char responseChar;
 
     System.out.print("Please enter the first name>> ");
     firstName = keyboard.nextLine();
@@ -143,11 +175,18 @@ public class MontCodeMembersApp  {
       System.out.println("Added: \n" + memberList.getCurrentMember());
     } catch (MCRecordDuplicateException e) {
       System.out.println("--==>>> Member already exists in database <<<==--");
-      System.out.println("Would you rather update this member (y/n)?");
-      if(keyboard.nextLine().toUpperCase().charAt(0) == 'Y') {
-        memberList.setCurrentMember(firstName, lastName);
-        updateSecondaryInformation();
-        System.out.println("Updated: \n" + memberList.getCurrentMember());
+
+      responseChar = '-';
+      while (responseChar != 'Y' && responseChar != 'N') {
+        System.out.println("Would you rather update this member (y/n)?");
+        responseChar = keyboard.nextLine().toUpperCase().charAt(0);
+        if(responseChar == 'Y') {
+          memberList.setCurrentMember(firstName, lastName);
+          updateSecondaryInformation();
+          System.out.println("Updated: \n" + memberList.getCurrentMember());
+        } else if(responseChar != 'N') {
+          System.out.println("Please enter y or n");
+        }
       }
     }
   }
@@ -160,6 +199,7 @@ public class MontCodeMembersApp  {
 
   private static void updateSecondaryInformation() {
     int responseInt = -1, maxMenu = 8;
+    char responseChar;
     String responseString = "", moreText;
     String[] updateKeys = {"First Name", "Last Name", "E-Mail", "GitHub Username", "Gitter Username", "FCC Username"};
     int changesMade = 0;
@@ -199,20 +239,33 @@ public class MontCodeMembersApp  {
           }
         }
         if(responseInt == 4) {
-          System.out.print("Also set Gitter to " + responseString + "  (y/n)?>> ");
-          if(keyboard.nextLine().toUpperCase().charAt(0) == 'Y') {
-            memberList.update("Gitter Username", responseString);
-            changesMade++;
-            moreText = " and Gitter Username";
+          responseChar = '-';
+          while (responseChar != 'Y' && responseChar != 'N') {
+            System.out.println("Also set Gitter to " + responseString + "  (y/n)?");
+            responseChar = keyboard.nextLine().toUpperCase().charAt(0);
+            if(responseChar == 'Y') {
+              memberList.update("Gitter Username", responseString);
+              changesMade++;
+              moreText = " and Gitter Username";
+            } else if(responseChar != 'N') {
+              System.out.println("Please enter y or n");
+            }
           }
-          System.out.print("Also set Free Code Camp to " + responseString + "  (y/n)?>> ");
-          if(keyboard.nextLine().toUpperCase().charAt(0) == 'Y') {
-            memberList.update("FCC Username", responseString);
-            changesMade++;
-            if(moreText == null) {
-              moreText = " and FCC Username";
-            } else {
-              moreText = ", Gitter Username and FCC Username";
+
+          responseChar = '-';
+          while (responseChar != 'Y' && responseChar != 'N') {
+            System.out.println("Also set Free Code Camp to " + responseString + "  (y/n)?");
+            responseChar = keyboard.nextLine().toUpperCase().charAt(0);
+            if(responseChar == 'Y') {
+              memberList.update("FCC Username", responseString);
+              changesMade++;
+              if(moreText == null) {
+                moreText = " and FCC Username";
+              } else {
+                moreText = ", Gitter Username and FCC Username";
+              }
+            } else if(responseChar != 'N') {
+              System.out.println("Please enter y or n");
             }
           }
           if(moreText == null) {
@@ -238,6 +291,7 @@ public class MontCodeMembersApp  {
   static void deleteMember() {
     boolean isFound;
     String confirmationMessage = "Sucessfully deleted";
+    char responseChar;
 
     if(memberList.size()== 0) {
       displayConfirmationMessage("There are currently no members in the database to delete");
@@ -246,9 +300,16 @@ public class MontCodeMembersApp  {
     isFound = findMember();
     if(isFound) {
       System.out.println("User Found: \n" + memberList.getCurrentMember());
-      System.out.print("Continue to delete?  (y/n)>> ");
-      if(keyboard.nextLine().toUpperCase().charAt(0) == 'Y') {
-        memberList.removeCurrentMember();
+
+      responseChar = '-';
+      while (responseChar != 'Y' && responseChar != 'N') {
+        System.out.println("Continue to delete? (y/n)?");
+        responseChar = keyboard.nextLine().toUpperCase().charAt(0);
+        if(responseChar == 'Y') {
+          memberList.removeCurrentMember();
+        } else if(responseChar != 'N') {
+          System.out.println("Please enter y or n");
+        }
       }
     } else {
       confirmationMessage = "**************************** <<<<<\n"
@@ -266,7 +327,8 @@ public class MontCodeMembersApp  {
 
   static void listOptions() {
     int responseInt;
-    String responseString;
+    char responseChar = '-';
+    String sortType = null;
 
     responseInt = -1;
     System.out.println("*** What would you like to sort by? ***");
@@ -276,7 +338,7 @@ public class MontCodeMembersApp  {
       System.out.print("What now?>> ");
       if(keyboard.hasNextInt()){
         responseInt = keyboard.nextInt();
-        if(responseInt < 1 || responseInt > 4) {
+        if(responseInt < 1 || responseInt > 2) {
           System.out.println(">> Input a valid option.");
         }
       } else {
@@ -287,34 +349,50 @@ public class MontCodeMembersApp  {
     }
     switch (responseInt) {
       case 1:
+        sortType = "byLastAsc";
         break;
       case 2:
+        sortType = "byLastDec";
         break;
       // case 3:
+      //   sortType = "byFirstAsc"
       //   break;
       // case 4:
+      //   sortType = "byFirstDec"
       //   break;
 
     }
 
-    //TODO deal with selection
-    // TODO Change other y/n places
-    // while (responseString != 'Y' || responseString != 'N') {
-    //   System.out.println("Would you like to store this as a preference (y/n)?");
-    //   responseString = keyboard.nextLine().toUpperCase().charAt(0);
-    //   if(responseString == 'Y') {
-    //     //TODO prefs.put("SEARCH", "byLastAsc");
-    //   } else if(responseString != 'N') {
-    //     //TODO Error handleing
-    //   }
-    // }
+    while (responseChar != 'Y' && responseChar != 'N') {
+      System.out.println("Would you like to store this as a preference (y/n)?");
+      responseChar = keyboard.nextLine().toUpperCase().charAt(0);
+      if(responseChar == 'Y') {
+        prefs.setDefaultListOption(sortType);
+      } else if(responseChar != 'N') {
+        System.out.println("Please enter y or n");
+      }
+    }
+    responseChar = '-';
+    if(responseChar != 'N') {
+      while (responseChar != 'Y' && responseChar != 'N') {
+        System.out.println("Would you like to display the list now (y/n)?");
+        responseChar = keyboard.nextLine().toUpperCase().charAt(0);
+        if(responseChar == 'N') {
+          return;
+        } else if(responseChar != 'Y') {
+          System.out.println("Please enter y or n");
+        }
+      }
+    }
+    listAllMembers(sortType);
   }
 
   static void listAllMembers() {
-    //TODO listOption = prefs.get("SEARCH", "byLastAsc");
-    String listOption = "byLastAsc";
+    String listOption = prefs.getDefaultListOption();
+    listAllMembers(listOption);
+  }
 
-    //TODO List Options
+  static void listAllMembers(String listOption) {
     switch (listOption) {
       case "byLastAsc": listAllMembersByLastAsc();
         break;
@@ -327,8 +405,6 @@ public class MontCodeMembersApp  {
       //   break;
       default: listAllMembersByLastAsc();
     }
-
-    displayConfirmationMessage("Displayed all " + memberList.size() + " members.");
   }
 
   static void listAllMembersByLastAsc() {
@@ -349,6 +425,7 @@ public class MontCodeMembersApp  {
       }
       System.out.println(memberList.getNext().nameToString());
     }
+    displayConfirmationMessage("Displayed all " + memberList.size() + " members.");
   }
 
   static void listAllMembersByLastDec() {
@@ -404,17 +481,31 @@ public class MontCodeMembersApp  {
 
   static void saveToFile() {
     String fileName = null;
-    //TODO add option to save to existing file in preferences
-    System.out.print("Please enter the name of the file you want to store it in (Homework test file=members.ser)>> ");
+    char responseChar;
+
+    System.out.print("Please enter the name of the file you want to store it in " +
+      "(Homework test file="+prefs.getDefaultFile()+")>> ");
     fileName = keyboard.nextLine();
     if(fileName == null || fileName.isEmpty()) {
-      fileName = "members.ser";
+      fileName = prefs.getDefaultFile();
     }
     try {
       memberList.saveToDrive(fileName);
+
     } catch (Exception e) {
       displayConfirmationMessage("File could not be saved.  Please try again with a new file name. " + e);
       return;
+    }
+
+    responseChar = '-';
+    while (responseChar != 'Y' && responseChar != 'N') {
+      System.out.println("Would you like to save this file name as your default (y/n)?");
+      responseChar = keyboard.nextLine().toUpperCase().charAt(0);
+      if(responseChar == 'Y') {
+        prefs.setDefaultFile(fileName);
+      } else if(responseChar != 'N') {
+        System.out.println("Please enter y or n");
+      }
     }
 
     displayConfirmationMessage("File saved.");

@@ -2,10 +2,9 @@ import java.net.*;
 
 public class MontCodeMember implements Comparable<MontCodeMember>, java.io.Serializable {
 
-  protected String firstName, lastName;
-  protected String eMail, githubUserName, gitterUserName, fccUserName;
-	//TODO Languages
-  // protected String[] languages; //known and wanting to know
+  private String firstName, lastName;
+  private String eMail, githubUserName, gitterUserName, fccUserName;
+	//IDEA Languages protected String[] languages; //known and wanting to know
 
 	public MontCodeMember(String firstName, String lastName) {
 		this.firstName = firstName;

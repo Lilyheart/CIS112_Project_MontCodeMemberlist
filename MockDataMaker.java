@@ -67,7 +67,7 @@ class MockDataMaker {
         newMembers++;
       } catch (MCRecordDuplicateException e) {
         countAlreadyAdded++;
-        if(countAlreadyAdded == 10) { //FIXME
+        if(countAlreadyAdded == 10) {
           throw new NoMoreDemoDataException("No remaining unique names in demo file. Please load new demo information.  " + newMembers + " records were added.");
         }
         i--;

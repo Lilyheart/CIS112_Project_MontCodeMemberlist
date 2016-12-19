@@ -4,12 +4,12 @@ class MontCodeMembersBST {
   private BinarySearchTreeReverseable<MontCodeMember> montCodeMembers;
   private MontCodeMember currentMember;
 
-  static final int LASTNAME_ASC = 1;
-  static final int LASTNAME_DEC = 4;
-  static final int FIRSTNAME_ASC = 5;
-  static final int FIRSTNAME_DEC = 6;
-  static int sortType;
-  static int addsSinceBalance;
+  private final int LASTNAME_ASC = 1;
+  private final int LASTNAME_DEC = 4;
+  private final int FIRSTNAME_ASC = 5;
+  private final int FIRSTNAME_DEC = 6;
+  private int sortType;
+  private int addsSinceBalance;
 
   public MontCodeMembersBST() {
     addsSinceBalance = 0;
@@ -52,7 +52,6 @@ class MontCodeMembersBST {
       throw new IOException("Error: " + e, e);
     }
 
-    output.close();
   }
 
   public void restoreFromDrive(String fileName) throws ClassNotFoundException, FileNotFoundException, IOException {
@@ -61,6 +60,7 @@ class MontCodeMembersBST {
     try {
       input = new ObjectInputStream(new FileInputStream(fileName));
       montCodeMembers = (BinarySearchTreeReverseable<MontCodeMember>)input.readObject();
+      input.close();
     } catch (ClassNotFoundException e) {
       throw new ClassNotFoundException( "Error: " + e);
     } catch (FileNotFoundException e) {
@@ -141,14 +141,12 @@ class MontCodeMembersBST {
       case "byLastDec": sortType = LASTNAME_DEC;
         numOfMembers = montCodeMembers.reset(LASTNAME_DEC);
         break;
-      case "byFirstAsc": sortType = FIRSTNAME_ASC;
-        numOfMembers = montCodeMembers.size();
-        //TODO Create new datastructure
-        break;
-      case "byFirstDec": sortType = FIRSTNAME_DEC;
-        numOfMembers = montCodeMembers.size();
-        //TODO Create new datastructure
-        break;
+      // IDEA case "byFirstAsc": sortType = FIRSTNAME_ASC;
+      //   numOfMembers = montCodeMembers.size();
+      //   break;
+      // case "byFirstDec": sortType = FIRSTNAME_DEC;
+      //   numOfMembers = montCodeMembers.size();
+      //   break;
       default:
     }
 
@@ -159,7 +157,6 @@ class MontCodeMembersBST {
     if(sortType <= 4) {
       return montCodeMembers.getNext(sortType);
     } else {
-      //TODO Create new methods
       return montCodeMembers.getNext(sortType);
     }
   }

@@ -538,7 +538,7 @@ class UnitTests {
     fails += test("Test getNext 3 Exception", testError, false);
     testError = false;
 
-    // NOTE sort byFirstAsc unitTest
+    // IDEA sort byFirstAsc unitTest
     // try {
     //   testList1.add("Anna", "Smith");
     // } catch (Exception e) {System.out.println("\n" + e); testError = true;}
@@ -562,7 +562,7 @@ class UnitTests {
     // fails += test("Test getNext 4 Exception", testError, false);
     // testError = false;
 
-    // NOTE sort byFirstDec unitTest
+    // IDEA sort byFirstDec unitTest
     // try {
     //   testList1.add("Mike", "Jones");
     // } catch (Exception e) {System.out.println("\n" + e); testError = true;}
